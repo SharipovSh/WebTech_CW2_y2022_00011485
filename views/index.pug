@@ -1,0 +1,139 @@
+extends base.pug 
+block content 
+    include includes/nav.pug
+    .mycontainer(class="bg-light d-sm-flex flex-row")
+        div(style="Width: 75px;" class="left-aside  bg-white d-sm-flex flex-column align-items-center justify-content-start" ) 
+            i(class="fas fa-home bg-light p-3 font-18 my-2 rounded") 
+            i(class="fas fa-home bg-light p-3 font-18 my-2 rounded") 
+            i(class="fa-solid fa-chart-line bg-light p-3 font-18 my-2 rounded") 
+            i(class="fa-solid fa-gear bg-light p-3 font-18 my-2 rounded") 
+            i(class="fa-solid fa-right-from-bracket bg-light p-3 font-18 my-2 rounded")
+            
+        section(class="p-4 d-lg-flex flex-row justify-content-between align-items-start w-100") 
+            div(class="projects row w-75 justify-content-start align-items-start p-1 rounded" )
+        
+                div(class="add-project col-sm-6 col-md-4 rounded mb-4 cursor-pointer" role="button" data-toggle="modal" data-target="#exampleModal1")
+                    div(class="add-project-background rounded d-flex flex-column align-items-center justify-content-center")
+                        i(class="fas fa-plus fs-1 fw-light" )
+                if projects
+                    each project in projects 
+                        div(class="project col-sm-6 col-md-4 rounded mb-4 rounded" )
+                            
+                            div(class="project-background rounded-top text-end p-1" ) 
+                                
+                                i(class="fas fa-trash d-none text-white m-auto text-end p-2 rounded"  onclick='deleteProject("' + project.projectID + '")'  role='button' data-toggle="modal" data-target="#beforeDelete")
+                            div(class="project-title bg-white p-2 border-bottom" onclick='openProject("' + project.projectID + '")')
+                                //- p(style="width: 5px; height: 3px;" class="bg-danger")
+                                //- if project.projectTitle.length > 15
+                                //-     span.h6= project.projectTitle.slice(0, 12) + "..."
+                                //- else    
+                                span.h6= project.projectTitle 
+                                
+                                    
+                            div(class="project-info border-bottom d-flex flex-row justify-content-between bg-white p-2 rounded-bottom" )
+                                div 
+                                    //- i(class="fa fa-paperclip text-secondary")
+                                    //- span(class="px-2") 12
+                                    i(class="fas fa-comment text-secondary")
+                                    span.px-2 Comment...
+                                div    
+                                    i(class="fa-solid fa-heart text-danger") 
+                                    //- span #{new Date(project.createdAt).getHours()}
+   
+            div(class="account-info-wrapper right-aside w-25 bg-white p-3 pb-1 rounded" style="box-shadow: 0px 0px 8px -4px rgba(0,0,0,0.5);")
+                div(class="account-info d-flex flex-row justify-content-start align-items-center mb-3")
+                    div(class="account-image w-25")
+                        img(class="img-fluid rounded-circle" src="/static/Images/user.jpg")
+                    div(class="account-name px-3")
+                        span.h6 Pavel Durov 
+                        br
+                        span User
+                        if id
+                            span "Error code: " #{id}
+                div(class="about mb-3 pt-1")
+                    span(class="h6 ") About: 
+                    p Pavel Durov - Founder, CEO, Product Manager of Telegram Messenger
+                div(class="upcomings")
+                    div(class="upcoming-deadlines mb-3")
+                        span(class="h6 ") Upcoming 
+                        div(class="upcoming-tasks bg-light py-1 rounded my-2")
+                            if deadlines
+                                if deadlines.length > 0
+                                    each deadline in deadlines
+                                        div( class="d-flex flex-row justify-content-between align-items-center p-2 px-3 rounded")
+                                            a(  id="deadline-wrapper" href=`/project/${deadline.projectID}/task/${deadline.id}` class="text-decoration-none")= deadline.title
+                                            i(class="fas fa-clock")
+                                else 
+                                    span.px-2 
+                                        i(class="fa-solid fa-folder") 
+                                        span.px-2 No tasks here yet 
+                    
+                    div(class="recent-activities mb-3")
+                        span(class="h6 ") Recent activities 
+                        div(class="upcoming-tasks bg-light d-flex flex-column-reverse justify-content-between py-1 rounded my-2")
+                            if recentTasks 
+                                if recentTasks.length > 0
+                                    each recentTask in recentTasks
+                                        div( class="d-flex flex-row justify-content-between align-items-center p-2 px-3 rounded")
+                                            a(  id="deadline-wrapper" href=`/project/${recentTask.projectID}/task/${recentTask.id}` class="text-decoration-none")= recentTask.title
+                                            i(class="fas fa-clock")
+                                else 
+                                    span.px-2 
+                                        i(class="fa-solid fa-folder") 
+                                        span.px-2 No tasks here yet
+
+                        
+
+
+                        //- div(class="d-flex flex-row justify-content-between align-items-center p-2 px-3 rounded")
+                        //-     a(href="/project/tcahsnf6b/task/783f51e8-fe4a-45e7-8907-d81a2b03fe2a" class="text-decoration-none") Task title
+                        //-     i(class="fas fa-clock")
+
+                        //- div(class="d-flex flex-row justify-content-between align-items-center  p-2 px-3 rounded")
+                        //-     a(href="#" class="text-decoration-none") Task title
+                        //-     i(class="fas fa-clock")
+                
+
+                //- BOOTSTRAP MODAL
+                div(class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+                    div(class="modal-dialog" role="document")
+                        div(class="modal-content")
+                            div(class="modal-header")
+                                h5(class="modal-title" id="exampleModalLabel") Create a new project
+                                button(type="button" class="close btn" data-dismiss="modal" aria-label="Close")
+                                    span(aria-hidden="true" class="h5") &times;    
+                            form(action="#" method="POST")                    
+                                div(class="modal-body")
+                                    div(class="form-group")
+                                        label(for="recipient-name" class="col-form-label") Title
+                                        input(type="text" class="form-control" id="project-title" name="title")
+                                        label(id="input-length-identifier" class="d-block text-end pt-1") 0/30
+                                div(class="modal-footer ")
+                                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                                    button(disabled id="create-project-btn" type="submit" class="btn btn-primary") Create
+
+
+                //- DELETE MODAL
+                div(class="modal fade" id="beforeDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+                    div(class="modal-dialog" role="document")
+                        div(class="modal-content")
+                            div(class="modal-header")
+                                h5(class="modal-title" id="exampleModalLabel") Deleting this project
+                                button(type="button" class="close btn" data-dismiss="modal" aria-label="Close")
+                                    span(aria-hidden="true" class="h5" ) &times;    
+                            form(action="#" method="POST")                    
+                                div(class="modal-body")
+                                    span(class="d-inline-block mb-3") Are you sure you want to delete this project ?
+                                    ul 
+                                        li You will permanently lose 
+                                            ul  
+                                                li All the tasks of this project
+                                                li All pages published from this project 
+                                div(class="modal-footer")
+                                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                                    button(id="delete-project-btn" type="submit" name="deleteProject" class="btn btn-danger") Delete 
+
+            
+           
+
+                    

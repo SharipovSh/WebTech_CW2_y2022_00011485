@@ -1,0 +1,106 @@
+extends base.pug 
+block viewTask 
+    include includes/nav.pug
+    .mycontainer(class="bg-light d-flex flex-row justify-content-start align-items-start") 
+        div(style="Width: 75px;" class="bg-white d-flex flex-column align-items-center justify-content-start" ) 
+            i(class="fas fa-home bg-light p-3 font-18 my-2 rounded") 
+            i(class="fas fa-home bg-light p-3 font-18 my-2 rounded") 
+            i(class="fas fa-home bg-light p-3 font-18 my-2 rounded") 
+            i(class="fa-solid fa-gear bg-light p-3 font-18 my-2 rounded") 
+            i(class="fa-solid fa-right-from-bracket bg-light p-3 font-18 my-2 rounded")
+        section(class="p-3 d-flex flex-column justify-content-start align-items-start w-100") 
+            
+            div(class="d-flex flex-row justify-content-between align-items-center w-100 px-3 py-2 m-auto bg-white mb-4 rounded" style="box-shadow: 0px 0px 8px -4px rgba(0,0,0,0.5)")
+                div 
+                    i(class="fa-solid fa-book ")
+                    a(href="/"  class='d-inline mx-2 text-decoration-none') Home
+                    span /   
+                    a(href="/project/" + project.projectID class='d-inline text-decoration-none')=  project.projectTitle + " "
+                    span / 
+                    a(href="/project/" + project.projectID + "/task/" + task.id class='d-inline text-decoration-none')=  task.title
+                div 
+                    i(class="fa fa-trash bg-light p-2 font-18  rounded mx-2" )
+                    i(class="fa-solid fa-pen-fancy bg-light p-2 font-18  rounded" ) 
+
+            div(class="w-100 pe-1 py-1  mb-3 row justify-content-around align-items-start rounded" )
+                div(class="task-body col-6 bg-white rounded pb-3" style="box-shadow: 0px 0px 8px -4px rgba(0,0,0,0.5)")
+                    form(action="#" method="POST") 
+                        div(class="form-group row align-items-center ")
+                            div(class="col-12 w-100 d-flex flex-row justify-content-between py-2")     
+                                label(for="recipient-name" class="col-form-label h5") Title
+                            div(class="col-12")    
+                                input(type="text" class="form-control" id="task-title" name="title" value=task.title)
+                        div(class="form-group row align-items-center mb-3")
+                            div(class="col-12 w-100 d-flex flex-row justify-content-between py-2")     
+                                label(for="recipient-name" class="col-form-label h5") Text
+                            div(class="col-12")    
+                                textarea(class="form-control" minlength="10" id="task-text" rows="6" name="taskText" required)= task.text
+
+                        div(class="d-flex flex-row align-items-center justify-content-between mb-3")
+                            div(class="d-flex flex-row align-items-center justify-content-between w-75")
+                                select(class="form-select form-select-sm w-75" id="task-status"  aria-label=".form-select-sm example" name="taskStatus" required)
+                                    if task.status == 1
+                                        option(value="1" selected disabled) To-do
+                                        option(value="2") In-progress
+                                        option(value="3") Completed
+                                    if task.status == 2
+                                        option(value="1" ) To-do
+                                        option(value="2" selected disabled) In-progress
+                                        option(value="3") Completed
+                                    if task.status == 3
+                                        option(value="1" ) To-do
+                                        option(value="2") In-progress
+                                        option(value="3" selected disabled) Completed
+                                
+                                div(class="input-group input-sm date w-75 px-3 rounded" data-provide="datepicker")
+                                    input(type="date" value=`${task.deadline.toISOString().slice(0, 10)}` class="form-control" name="deadline" style="transform: scale(1, 0.85)" min= `${new Date().toISOString().slice(0, 10)}` required)
+                                    div(class="input-group-addon inputsm rounded")
+                                        span(class="glyphicon glyphicon-th rounded")
+                            //- button(class="btn btn-sm btn-success float-right") Save
+                            select(class="form-select form-select-sm w-25" id="task-status"  aria-label=".form-select-sm example" name="owner" required)
+                                each projectSelect in projects
+                                    if projectSelect.projectTitle == project.projectTitle
+                                        option(selected disabled)= project.projectTitle
+                                    else
+                                        option(value=projectSelect.projectID)= projectSelect.projectTitle
+                        div
+                            button(class="btn btn-success") Save changes
+                div(class="task-info col-5 bg-white rounded py-3" style="box-shadow: 0px 0px 8px -4px rgba(0,0,0,0.5)")
+                    h4(class="d-inline-block mb-4") Task details
+                    div(class="task-project d-flex flex-row justify-content-start align-items-center  p-1 border-bottom mb-2")
+                        div.w-25     
+                            i(class="fa-solid fa-folder") 
+                            span.h6.px-2 Project:
+                        h5.lead= project.projectTitle
+                    div(class="task-assignee d-flex flex-row justify-content-start align-items-center  p-1 border-bottom mb-2")
+                        div.w-25   
+                            i(class="fa fa-user")
+                            span.h6.px-2 Assignee:
+                        h5.lead Durov
+                    div(class="task-status d-flex flex-row justify-content-start align-items-center  p-1 border-bottom mb-2")
+                        div.w-25     
+                            i(class="fas fa-lightbulb")
+                            span.h6.px-2 Status:
+                        if task.status == 1
+                            h5.lead To-do
+                        if task.status == 2
+                            h5.lead In-progress
+                        if task.status == 3
+                            h5.lead Completed
+                    div(class="task-start-date d-flex flex-row justify-content-start align-items-center  p-1 border-bottom mb-2")
+                        div.w-25  
+                            i(class="fa fa-calendar")   
+                            span.h6.px-2 Started at:
+                        h5.lead #{task.createdAt.toISOString().slice(0, 10)} #{task.createdAt.toISOString().slice(11, 19)}
+                    div(class="task-deadline d-flex flex-row justify-content-start align-items-center  p-1 border-bottom")
+                        div.w-25     
+                            i(Class="fas fa-clock")
+                            span.h6.px-2 Deadline:
+                        h5.lead #{task.deadline.toISOString().slice(0, 10)} #{task.deadline.toISOString().slice(11, 19)}
+
+                    - var current = new Date().getTime()
+                    - var deadline = new Date(task.deadline.toISOString().slice(0, 10)).getTime()
+                    if current > deadline 
+                        div(class="alert alert-danger py-2 mt-3 mb-0" role="alert")
+                            strong Deadline 
+                            | for this task passed !

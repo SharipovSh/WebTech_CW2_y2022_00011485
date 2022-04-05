@@ -1,0 +1,162 @@
+extends base.pug 
+block tasks 
+    include includes/nav.pug
+    .mycontainer(class="bg-light d-flex flex-row align-items-start")
+        div(style="Width: 75px;" class="bg-white d-flex flex-column align-items-center justify-content-start" ) 
+            i(class="fas fa-home bg-light p-3 font-18 my-2 rounded") 
+            i(class="fas fa-home bg-light p-3 font-18 my-2 rounded") 
+            i(class="fas fa-home bg-light p-3 font-18 my-2 rounded") 
+            i(class="fa-solid fa-gear bg-light p-3 font-18 my-2 rounded") 
+            i(class="fa-solid fa-right-from-bracket bg-light p-3 font-18 my-2 rounded")
+        section(class="p-3 d-flex flex-column justify-content-start align-items-start w-100") 
+            //- i(class="fa-solid fa-book")
+            //- a(href="/project/" + projectID class='d-inline')= projectTitle
+            div(class="d-flex flex-row justify-content-between align-items-center w-100 px-3 py-2 m-auto bg-white mb-4 rounded" style="box-shadow: 0px 0px 8px -4px rgba(0,0,0,0.5)")
+                div 
+                    if error
+                        span= error
+                    i(class="fa-solid fa-book ")
+                    a(href="/"  class='d-inline mx-2 text-decoration-none') Home
+                    span /  
+                    a(href="/project/" + projectID class='d-inline text-decoration-none')=  projectTitle
+                div 
+                    
+                    i(class="fa-solid fa-chart-line bg-light p-2 font-18  rounded mx-2" role="button" data-toggle="modal" data-target=".bd-example-modal-lg")
+                    i(class="fa-solid fa-pen-fancy bg-light p-2 font-18  rounded" role="button"  data-toggle="modal" data-target="#editProject") 
+                //- div(class="bg-light border col-3 pb-2") 
+                //-     h3(class="border-bottom py-2 mb-2") To-do
+                //-     span(class="h5")= numOFtodo.count
+                //- div(class="bg-light border col-3 pb-2") 
+                //-     h3(class="border-bottom py-2 mb-2") In-progress
+                //-     span(class="h5")= numOFprogress.count
+                //- div(class="bg-light border col-3 pb-2") 
+                //-     h3(class="border-bottom py-2 mb-2") Completed
+                //-     span(class="h5")= numOFcompleted.count
+
+            div(class="w-100 pe-1 py-1 d-flex flex-row justify-content-between align-items-center mb-3")
+                button(class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1") Add new
+                
+                input(type="text" id="search-input" onkeyup="searchFromTable()" placeholder="Search..." class="form-control w-25" aria-label="Small" aria-describedby="inputGroup-sizing-sm")
+                
+            table(class="table table-striped border rounded" id="myTable")
+                    thead
+                        tr
+                            th(scope="col") #
+                            th(scope="col") Title
+                            th(scope="col") Start Date
+                            th(scope="col") Deadline
+                            th(scope="col") Assignee
+                            th(scope="col") Status
+                            th(scope="col") Edit/Delete
+                    tbody
+                        if Tasks 
+                            - let count = 0
+                            each task in Tasks 
+                                - count++
+                                tr
+                                    th(scope="row")= count
+                                    td= task.title
+                                    td #{(task.startDate).toISOString().slice(0, 10)}
+                                    td #{(task.deadline).toISOString().slice(0, 10)}
+                                    td
+                                        img(src="/static/Images/user.jpg" class="tb-img-size rounded-circle me-2")
+                                        span Durov
+                                    if task.status == 1
+                                        td To-do
+                                    else if task.status == 2
+                                        td In-progress
+                                    else if task.status == 3
+                                        td Completed
+                                    //- something went wrong and no status has been selected by user, THEREFORE, (by default " To-do ")
+                                    else  
+                                        td To-doddd
+                                    td 
+                                        a(href="/project/" + task.projectID + "/task/" + task.id )
+                                            button(class="btn btn-success btn-sm mx-1") View 
+                                        button(class="btn btn-danger btn-sm mx-1" onclick='deleteTask("' + task.id + '")' data-toggle="modal" data-target="#beforeDelete") Del
+
+
+        div(class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+            div(class="modal-dialog" role="document")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h5(class="modal-title" id="exampleModalLabel") Create a new task 
+                        button(type="button" class="close btn"  onclick="infoShow()")
+                            i(class="fas fa-info-circle " id="show-task-add-info")    
+                    form(action="#" method="POST")                    
+                        div(class="modal-body")
+                            div(class="info-body" id="info-add-task")
+                                ul  
+                                    li Minimum 5 letters for task title 
+                                    li Minimum 10 letters for task text 
+                                    li Task status is set to "To-do" when not selected 
+                                    li Task deadline must be provided
+                            div(class="form-group")
+                                label(for="recipient-name" class="col-form-label") Title
+                                input(type="text" class="form-control" minlength="5" id="task-title" name="taskTitle" placeholder='Title for your task' required)
+                                
+                            div(class="form-group mb-3")
+                                label(for="recipient-name" class="col-form-label") Text
+                                textarea(class="form-control" minlength="10" id="task-text" rows="4" name="taskText" required)
+                            div(class="d-flex flex-row align-items-center")
+                                select(class="form-select form-select-sm w-25" id="task-status"  aria-label=".form-select-sm example" name="taskStatus" required)
+                                    option(selected disabled) Status
+                                    option(value="1") To-do
+                                    option(value="2") In-progress
+                                    option(value="3") Completed
+                             
+                                div(class="input-group input-sm date w-50 px-3 rounded" data-provide="datepicker")
+                                    input(type="date" class="form-control" name="deadline" style="transform: scale(1, 0.85)" min= `${new Date().toISOString().slice(0, 10)}` required)
+                                    div(class="input-group-addon inputsm rounded")
+                                        span(class="glyphicon glyphicon-th rounded")
+                                
+                        div(class="modal-footer")
+                            button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                            button(id="create-task-btn" type="submit" name="create" class="btn btn-primary") Create
+
+
+        //- DELETE MODAL
+        div(class="modal fade" id="beforeDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+            div(class="modal-dialog" role="document")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h5(class="modal-title" id="exampleModalLabel") Deleting this task
+                        button(type="button" class="close btn" data-dismiss="modal" aria-label="Close")
+                            span(aria-hidden="true" class="h5" ) &times;    
+                    form(action="#" method="POST")                    
+                        div(class="modal-body")
+                            span Are you sure you want to delete this taks ?
+                        div(class="modal-footer")
+                            button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                            button(id="delete-task-btn" type="submit" name="delete" class="btn btn-danger") Delete
+
+        //- SHOW STATISTICS MODAL
+        div(class="modal fade bd-example-modal-lg"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true")
+            div(class="modal-dialog modal-lg")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h5(class="modal-title" id="exampleModalLabel") Project overview for #{projectTitle}
+                    div(class="modal-content" style="border-radius: 0 !important;")
+                        div(class="w-100 m-auto row px-3 py-4 justify-content-around align-items-center")
+                            div(class="col-lg-3 text-center bg-white border p-3 my-2 rounded")
+                                span.h5 To-do: #{numOFtodo.count}
+                            div(class="col-lg-3 text-center bg-white border p-3 my-2 rounded")
+                                span.h5 In-progress: #{numOFprogress.count}
+                            div(class="col-lg-3 text-center bg-white border p-3 my-2 rounded")
+                                span.h5 Completed: #{numOFcompleted.count}
+
+        div(class="modal fade" id="editProject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+            div(class="modal-dialog" role="document")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h5(class="modal-title" id="exampleModalLabel") Edit this task 
+                        button(type="button" class="close btn" data-dismiss="modal" aria-label="Close")
+                            span(aria-hidden="true" class="h5" ) &times;    
+                    form(action="#" method="POST")                    
+                        div(class="modal-body")
+                            div(class="form-group")
+                                label(for="recipient-name" class="col-form-label") Title
+                                input(type="text" class="form-control" id="task-title" name="projectTitle" value=projectTitle)
+                        div(class="modal-footer")
+                            button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                            button(id="create-task-btn" type="submit" name="update" class="btn btn-success") Save changes
