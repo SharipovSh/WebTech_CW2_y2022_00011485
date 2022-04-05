@@ -1,0 +1,19 @@
+.page-center {
+    height: 100vh;
+}
+
+.f404 {
+    font-size: 250px;
+    font-family: 'Aldrich', sans-serif;
+    position: relative;
+}
+.f400-h5 {
+    transform: translateY(35px);
+    font-size: 21px;
+    font-family: 'Aldrich', sans-serif;
+}
+.f404-p {
+    transform: translateY(-55px);
+    font-size: 18px;
+    font-family: 'Aldrich', sans-serif;
+}

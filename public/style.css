@@ -1,0 +1,205 @@
+.mycontainer {
+    max-width: 1100px;
+    margin: auto;
+    
+}
+.font-18 {
+    font-size: 18px;
+}
+
+.font-21 {
+    font-size: 21px;
+}
+
+.tb-img-size{ 
+    width: 30px;
+
+}
+.page-not-found-img {
+    background-image: url(https://1.bp.blogspot.com/-gxsOcYWghHA/Xp_izTh4sFI/AAAAAAAAU8s/y637Fwg99qAuzW9na_NT_uApny8Vce95gCEwYBhgL/s1600/header-footer-gradient-bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 80vh;
+}
+.page-not-found-img h1 {
+    font-size: 98px !important;
+}
+
+body {
+    background-color: rgb(240,242,245)!important;
+    
+}
+
+
+
+/* STYLES STYLES STYLES */
+
+
+.mycontainer section .project{
+    cursor: pointer;
+
+}
+
+.mycontainer section .project .project-background {
+    height: 90px;
+    cursor: auto;
+    /* background: rgb(128,124,207);
+    background: linear-gradient(90deg, rgba(128,124,207,1) 0%, rgba(131,98,126,1) 100%); */
+    background: url(https://www.se.com/ru/ru/assets/v2/528/media/230667/900/709934422-Buildings-Facts-IC-1920x1080.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.mycontainer section .add-project:hover .add-project-background{
+    border: 2px dashed #0275d8 !important;
+    transition: 0.5s;
+}
+.mycontainer section .project .project-background:hover i{ 
+    display: inline-block !important;
+
+}
+.mycontainer section .project .project-background i:hover{
+    cursor: pointer;
+    animation: shake 0.7s;
+    
+}
+
+@keyframes shake {
+    25% {
+        transform: translateX(4px) rotate(20deg) scale(1.2, 1.2);
+    }
+    50% {
+        transform: translateX(-4px) rotate(-20deg) scale(1.2, 1.2);
+    }
+    75% {
+        transform: translateX(4px) rotate(20deg) scale(1.2, 1.2);
+    }
+}
+
+
+.mycontainer section .project .project-title, #deadline-wrapper {
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}
+
+.mycontainer section .add-project .add-project-background{
+    height: 170px ;
+    border: 2px dashed gray;
+}
+
+#info-add-task{ 
+    height: 0 !important;
+    overflow: hidden !important;
+    transition: 0.5s ;
+    
+}
+  
+#show-task-add-info {
+    z-index: 99;
+    border-radius: 50%;
+    transition: 1s;
+    position: relative;
+}
+#show-task-add-info::after{
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-color: rgba(233, 237, 240, 0.774);
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    z-index: -1;
+    animation: 2s myAnimation infinite;
+    
+}
+
+
+.mycontainer section .task-info .task-project div,
+.mycontainer section .task-info .task-assignee div,
+.mycontainer section .task-info .task-status div,
+.mycontainer section .task-info .task-start-date div,
+.mycontainer section .task-info .task-deadline div 
+{
+    width: 30% !important;
+    max-width: 105px !important;
+}
+
+@keyframes myAnimation {
+    25% {
+        transform: scale(1.2, 1.2);
+    }
+    50% {
+        transform: scale(1.7, 1.7);
+    }
+    
+}
+
+@media (max-width: 992px) {
+
+    .mycontainer {
+        max-width: 860px;
+    }
+    .mycontainer section .projects,
+    .mycontainer section .account-info-wrapper  {
+        width: 100% !important;
+    }
+    .mycontainer section .account-info-wrapper .upcomings{
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+    .mycontainer section .account-info-wrapper .upcomings .upcoming-deadlines,
+    .mycontainer section .account-info-wrapper .upcomings .recent-activities
+     {
+        width: 48% !important;
+    }
+    .mycontainer section .account-info-wrapper .account-image {
+        width: 15% !important;
+        min-width: 85px;
+    }
+
+}
+
+@media (max-width: 768px) {
+    
+
+    
+    
+}
+
+@media (max-width: 576px) {
+    /* .mycontainer {
+        max-width: 540px;
+    } */
+
+    .mycontainer .left-aside {
+        width: 100% !important;
+        margin: auto;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .mycontainer section .projects,
+    .mycontainer section .account-info-wrapper  {
+        width: 100% !important;
+    }
+    .mycontainer section .account-info-wrapper .account-image {
+        width: 15% !important;
+    }
+
+    .mycontainer section .account-info-wrapper .upcomings{
+        flex-direction: column !important;
+    }
+
+    .mycontainer section .account-info-wrapper .upcomings .upcoming-deadlines,
+    .mycontainer section .account-info-wrapper .upcomings .recent-activities
+     {
+        width: 100% !important;
+    }
+}
+
