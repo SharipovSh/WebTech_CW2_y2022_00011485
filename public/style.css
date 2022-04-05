@@ -149,7 +149,7 @@ body {
         display: flex !important;
         flex-direction: row !important;
         justify-content: space-between !important;
-        align-items: center !important;
+        align-items: flex-start !important;
     }
     .mycontainer section .account-info-wrapper .upcomings .upcoming-deadlines,
     .mycontainer section .account-info-wrapper .upcomings .recent-activities
