@@ -4,6 +4,7 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [Source code](#source-code)
 
 ## General info
 This project can assist you with creating tasks so that you will schedule your time and manage it effectivly. To create a task, firast create a project by giving a title that tell shortly about this project.
@@ -26,5 +27,7 @@ $ npm install express
 ```
 $ node app
 ```
-
-
+## Source code
+```
+git clone https://github.com/WiutWebTech/WebTech_CW2_y2022_00011485.git
+```
