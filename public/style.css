@@ -34,10 +34,15 @@ body {
 
 /* STYLES STYLES STYLES */
 
-
+.mycontainer section {
+    overflow: scroll;
+}
 .mycontainer section .project{
     cursor: pointer;
+}
 
+.mycontainer section .project .project-info {
+    cursor: auto;
 }
 
 .mycontainer section .project .project-background {
@@ -60,8 +65,7 @@ body {
 }
 .mycontainer section .project .project-background i:hover{
     cursor: pointer;
-    animation: shake 0.7s;
-    
+    animation: shake 0.7s ;
 }
 
 @keyframes shake {
@@ -94,6 +98,13 @@ body {
     transition: 0.5s ;
     
 }
+#myTable {
+    min-width: 767px !important;
+    overflow-x: scroll !important;
+    scrollbar-gutter: stable;
+}
+
+
   
 #show-task-add-info {
     z-index: 99;
@@ -144,6 +155,7 @@ body {
     .mycontainer section .projects,
     .mycontainer section .account-info-wrapper  {
         width: 100% !important;
+        margin: auto !important;
     }
     .mycontainer section .account-info-wrapper .upcomings{
         display: flex !important;
@@ -183,6 +195,11 @@ body {
         justify-content: space-between !important;
         padding-left: 20px;
         padding-right: 20px;
+    }
+
+    .mycontainer .left-aside i {
+        font-size: 14px;
+        padding: 15px !important;
     }
     .mycontainer section .projects,
     .mycontainer section .account-info-wrapper  {
